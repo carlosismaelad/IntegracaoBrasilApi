@@ -1,6 +1,5 @@
 using System.Net;
 using IntegracaoBrasilApi.Interfaces;
-using IntegracaoBrasilApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegracaoBrasilApi.Controllers
@@ -17,6 +16,11 @@ namespace IntegracaoBrasilApi.Controllers
             _enderecoService = enderecoService;
         }
 
+        [HttpGet("Buscar/{cep}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> BuscarEndereco([FromRoute] string cep)
         {
             var response = await _enderecoService.BuscarEndereco(cep);
