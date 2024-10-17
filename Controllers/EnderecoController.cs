@@ -1,5 +1,5 @@
 using System.Net;
-using IntegracaoBrasilApi.Interfaces;
+using IntegracaoBrasilApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegracaoBrasilApi.Controllers
@@ -8,19 +8,20 @@ namespace IntegracaoBrasilApi.Controllers
     [Route("api/v1/[controller]")]
     public class EnderecoController : ControllerBase
     {
-        public readonly IEnderecoService _enderecoService;
+        public readonly EnderecoService _enderecoService;
 
-        public EnderecoController(IEnderecoService enderecoService)
+        public EnderecoController(EnderecoService enderecoService)
         {
             _enderecoService = enderecoService;
         }
 
-        public async Task<IActionResult> BuscarEndereco([FromRoute] string cep){
+        public async Task<ActionResult> BuscarEndereco([FromRoute] string cep){
             var response = await _enderecoService.BuscarEndereco(cep);
             if(response.CodigoHttp == HttpStatusCode.OK){
                 return Ok(response.DadosRetorno);
             }
-            else{
+            else
+            {
                 return StatusCode((int)response.CodigoHttp, response.ErroRetorno);
             }
         }
